@@ -24,7 +24,7 @@ The installer overwrites only files with matching names that are included in thi
 
 - `AGENTS.md`: global assistant instructions.
 - `extensions/`: model-usage indicator extension.
-- `skills/`: animate, impeccable, review-animations, and selected Matt Pocock skills (`grill-me`, `to-spec`, `code-review`).
+- `skills/`: animate, impeccable, review-animations, Taste Skill (`design-taste-frontend`), and selected Matt Pocock skills (`grill-me`, `to-spec`, `code-review`).
 
 Extensions may require dependencies or APIs available in your installation. Credentials and private preferences (provider, model, sessions, personal MCP servers) are not distributed.
 
