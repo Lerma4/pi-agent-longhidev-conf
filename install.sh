@@ -10,4 +10,5 @@ for skill in "$src"/skills/*; do
   [ -d "$skill" ] || continue
   cp -R "$skill" "$dest/skills/"
 done
+pi install npm:@ff-labs/pi-fff
 printf 'Setup Pi installato in %s. Riavvia Pi per applicare le modifiche.\n' "$dest"

@@ -8,4 +8,6 @@ Get-ChildItem (Join-Path $src 'extensions') -Filter '*.ts' -File | Copy-Item -De
 Get-ChildItem (Join-Path $src 'skills') -Directory | ForEach-Object {
     Copy-Item $_.FullName (Join-Path $dest 'skills') -Recurse -Force
 }
+& pi install npm:@ff-labs/pi-fff
+if ($LASTEXITCODE -ne 0) { throw "Installazione di pi-fff non riuscita (exit code $LASTEXITCODE)." }
 Write-Host "Setup Pi installato in $dest. Riavvia Pi per applicare le modifiche."
