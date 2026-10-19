@@ -10,7 +10,15 @@ Open Pi and paste this link, asking: **“Clone this repository and install the 
 https://github.com/Lerma4/pi-agent-longhidev-conf
 ```
 
-Pi can clone the repository and copy the files to `~/.pi/agent`. Alternatively, use the terminal:
+Pi can clone the repository and copy the files to `~/.pi/agent`. Alternatively, use the terminal. On Windows (PowerShell):
+
+```powershell
+git clone https://github.com/Lerma4/pi-agent-longhidev-conf.git
+cd pi-agent-longhidev-conf
+.\install.ps1
+```
+
+On macOS/Linux (or Git Bash):
 
 ```sh
 git clone https://github.com/Lerma4/pi-agent-longhidev-conf.git
