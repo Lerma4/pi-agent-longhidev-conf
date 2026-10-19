@@ -10,4 +10,6 @@ Get-ChildItem (Join-Path $src 'skills') -Directory | ForEach-Object {
 }
 & pi install npm:@ff-labs/pi-fff
 if ($LASTEXITCODE -ne 0) { throw "Installazione di pi-fff non riuscita (exit code $LASTEXITCODE)." }
+npx hyperframes skills update
+if ($LASTEXITCODE -ne 0) { throw "Installazione delle skill HyperFrames non riuscita (exit code $LASTEXITCODE)." }
 Write-Host "Setup Pi installato in $dest. Riavvia Pi per applicare le modifiche."

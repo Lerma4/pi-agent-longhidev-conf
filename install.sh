@@ -11,4 +11,5 @@ for skill in "$src"/skills/*; do
   cp -R "$skill" "$dest/skills/"
 done
 pi install npm:@ff-labs/pi-fff
+npx hyperframes skills update
 printf 'Setup Pi installato in %s. Riavvia Pi per applicare le modifiche.\n' "$dest"
