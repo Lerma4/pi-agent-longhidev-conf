@@ -3,7 +3,9 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 function readLimits(): Promise<any> {
   return new Promise((resolve, reject) => {
-    const child = spawn("codex", ["app-server", "--listen", "stdio://"], { stdio: ["pipe", "pipe", "ignore"] });
+    const child = process.platform === "win32"
+      ? spawn("cmd.exe", ["/d", "/s", "/c", "codex app-server --listen stdio://"], { stdio: ["pipe", "pipe", "ignore"] })
+      : spawn("codex", ["app-server", "--listen", "stdio://"], { stdio: ["pipe", "pipe", "ignore"] });
     let buffer = "";
     let done = false;
     const finish = (error?: Error, value?: any) => {
@@ -49,7 +51,9 @@ function timeUntilReset(resetsAt: number | string | undefined): string | undefin
   const timestamp = typeof resetsAt === "number" ? resetsAt * 1000 : Date.parse(resetsAt);
   if (!Number.isFinite(timestamp)) return;
   const minutes = Math.max(0, Math.ceil((timestamp - Date.now()) / 60_000));
-  return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
+  const days = Math.floor(minutes / 1440);
+  const hours = Math.floor((minutes % 1440) / 60);
+  return days ? `${days}d ${hours}h` : `${hours}h ${minutes % 60}m`;
 }
 
 export default function (pi: ExtensionAPI) {
@@ -65,7 +69,7 @@ export default function (pi: ExtensionAPI) {
       try {
         const model = ctx.model;
         const prefix = model ? `${model.provider}/${model.id}` : "modello non disponibile";
-        if (model?.provider !== "openai") {
+        if (model?.provider !== "openai-codex" && model?.provider !== "openai") {
           ctx.ui.setStatus("model-usage", ctx.ui.theme.fg("dim", `${prefix} · quote Codex: solo provider OpenAI`));
           return;
         }
@@ -85,8 +89,8 @@ export default function (pi: ExtensionAPI) {
         const render = (values: [number, number]) => {
           const meter = (percent: number) => ctx.ui.theme.fg(percent >= 90 ? "error" : percent >= 70 ? "warning" : "success", battery(percent));
           const parts = [
-            fiveHour && `5h ${meter(values[0])} ${Math.round(target[0])}%${timeUntilReset(fiveHour.resetsAt) ? ` · tra ${timeUntilReset(fiveHour.resetsAt)}` : ""}`, 
-            weekly && `7g ${meter(values[1])} ${Math.round(target[1])}%`,
+            fiveHour && `5h ${meter(values[0])} ${Math.round(target[0])}%${timeUntilReset(fiveHour.resetsAt) ? ` · ↻ ${timeUntilReset(fiveHour.resetsAt)}` : ""}`,
+            weekly && `7g ${meter(values[1])} ${Math.round(target[1])}%${timeUntilReset(weekly.resetsAt) ? ` · ↻ ${timeUntilReset(weekly.resetsAt)}` : ""}`,
           ].filter(Boolean).join(" · ");
           ctx.ui.setStatus("model-usage", `${ctx.ui.theme.fg("dim", `${prefix} · `)}${parts}`);
         };
@@ -114,7 +118,7 @@ export default function (pi: ExtensionAPI) {
     animation = undefined;
   });
   pi.on("model_select", (_event, ctx) => {
-    if (ctx.model?.provider === "openai") refresh?.();
+    if (ctx.model?.provider === "openai-codex" || ctx.model?.provider === "openai") refresh?.();
     else ctx.ui.setStatus("model-usage", ctx.ui.theme.fg("dim", `${ctx.model?.provider ?? "modello"} · quote Codex: solo provider OpenAI`));
   });
 }
