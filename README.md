@@ -31,7 +31,8 @@ The installer overwrites only files with matching names that are included in thi
 ## Contents
 
 - `AGENTS.md`: global assistant instructions.
-- `extensions/`: model-usage indicator extension.
+- `extensions/model-usage.ts`: model-usage indicator.
+- `extensions/git-info.ts`: themed Git information bar with branch, staged/modified/untracked file counts, ahead/behind counts, and the latest commit. Use `/git-commit` to show its complete title. Requires Git; the Git icon requires a Nerd Font. Installed automatically by both setup scripts, just like model-usage.
 - `skills/`: animate, impeccable, review-animations, Taste Skill (`design-taste-frontend`), and selected Matt Pocock skills (`grill-me`, `to-spec`, `code-review`).
 - Search tools: [pi-fff](https://github.com/dmtrKovalenko/fff/tree/main/packages/pi-fff), which provides `fffind`, `ffgrep`, and `fff-multi-grep`.
 - [HyperFrames](https://github.com/heygen-com/hyperframes) core skills, installed by both setup scripts with `npx hyperframes skills update` (the full skill sources are not stored in this repo).
